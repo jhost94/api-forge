@@ -120,9 +120,10 @@ function buildFireFox() {
     const firefoxSourceDir = path.resolve(current, FIREFOX_DIR, "src");
     
     copyJsFiles(coreSourceDir, path.resolve(distDir, "popup.js"));
-    copyJsFiles(coreSourceDir, path.resolve(distDir, "background.js"));
+    copyJsFiles(coreSourceDir, path.resolve(distDir, "bridge.js"), "Bridge.initialize();");
+    copyJsFiles(coreSourceDir, path.resolve(distDir, "interceptor.js"), "Interceptor.initialize();");
     copyJsFiles(firefoxSourceDir, path.resolve(distDir, "popup.js"), "Popup.initialize();");
-    copyJsFiles(firefoxSourceDir, path.resolve(distDir, "background.js"));
+    copyJsFiles(firefoxSourceDir, path.resolve(distDir, "background.js"), "Background.initialize();");
     copyHtmlFiles(firefoxSourceDir, path.resolve(distDir, "popup.html"));
     copyCSSFiles(firefoxSourceDir, path.resolve(distDir, "popup.css"));
     fs.copyFileSync(path.resolve(path.dirname(firefoxSourceDir), "manifest.json"), path.resolve(distDir, "manifest.json"));

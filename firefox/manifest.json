@@ -6,8 +6,11 @@
     "description": "Intercept and override API calls.",
 
     "permissions": [
-        "storage"
-    ],
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "webRequestFilterResponse"
+]   ,
 
     "host_permissions": [
         "<all_urls>"
@@ -17,21 +20,20 @@
         "default_popup": "popup.html"
     },
 
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
+    "background": {
+        "scripts": ["background.js"]
     },
 
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "js": ["bridge.js"],
-            "run_at": "document_start"
-        },
-        {
-            "matches": ["<all_urls>"],
+            "matches": ["https://tbcpl.lol/*"],
             "js": ["interceptor.js"],
             "run_at": "document_start",
             "world": "MAIN"
         }
-    ]
+    ],
+
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    }
 }

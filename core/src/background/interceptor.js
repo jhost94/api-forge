@@ -1,66 +1,32 @@
 class Interceptor {
 
-    static endpoints = [];
     static originalFetch = null;
-
-    static findEndpoint(url, method) {
-        return this.endpoints.find(endpoint =>
-            endpoint.enabled &&
-            endpoint.url === url &&
-            endpoint.method.toUpperCase() === method.toUpperCase()
-        );
-    }
-
-    static createResponse(endpoint) {
-        const { status, headers, body } = endpoint.response;
-
-        return new Response(
-            [204, 205, 304].includes(status) ? null : body,
-            { status, headers }
-        );
-    }
+    static initialized = false;
 
     static initialize() {
-        if (this.originalFetch) return;
+        if (this.initialized) return;
+        this.initialized = true;
 
         this.originalFetch = window.fetch;
 
-        window.fetch = function(input, init) {
+        window.fetch = async function(...args) {
+            const response = await Interceptor.originalFetch.apply(this, args);
+
+            const input = args[0];
             const url = input instanceof Request
                 ? input.url
-                : new URL(String(input), window.location.href).href;
+                : String(input);
 
-            const method = (
-                init?.method ||
-                (input instanceof Request ? input.method : 'GET')
-            ).toUpperCase();
-
-            const endpoint = Interceptor.findEndpoint(url, method);
-
-            if (endpoint) {
-                console.log('[ApiForge] Intercepted:', method, url);
-                return Promise.resolve(Interceptor.createResponse(endpoint));
+            if (url.includes('links.PORTUGAL.json')) {
+                console.log(
+                    '[ApiForge] Website received:',
+                    await response.clone().text()
+                );
             }
 
-            return Interceptor.originalFetch.apply(this, arguments);
+            return response;
         };
 
-        window.addEventListener('message', event => {
-            if (
-                event.source !== window ||
-                event.data?.source !== 'APIFORGE_EXTENSION' ||
-                event.data?.type !== 'UPDATE_ENDPOINTS' ||
-                !Array.isArray(event.data.endpoints)
-            ) {
-                return;
-            }
-
-            this.endpoints = event.data.endpoints;
-        });
-
-        window.postMessage({
-            source: 'APIFORGE_PAGE',
-            type: 'REQUEST_ENDPOINTS'
-        }, window.location.origin);
+        console.log('[ApiForge] Fetch observer initialized');
     }
 }
