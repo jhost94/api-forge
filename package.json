@@ -1,0 +1,19 @@
+{
+  "name": "api-forge",
+  "version": "0.0.1",
+  "description": "Browser extensions to overwrite API calls",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhost94/api-forge.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jhost94/api-forge/issues"
+  },
+  "homepage": "https://github.com/jhost94/api-forge#readme"
+}

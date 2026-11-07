@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ApiForge</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+    <header>
+        <h2>ApiForge</h2>
+        <button id="addEndpoint">+ Add</button>
+    </header>
+
+    <main>
+        <div id="endpoints"></div>
+
+        <section id="editor" hidden>
+            <h3>Add endpoint</h3>
+
+            <label for="name">Name</label>
+            <input id="name" placeholder="My API mock">
+
+            <label for="method">Method</label>
+            <select id="method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>PATCH</option>
+                <option>DELETE</option>
+            </select>
+
+            <label for="url">Exact URL</label>
+            <input id="url" placeholder="https://example.com/api/users">
+
+            <label for="status">Response status</label>
+            <input id="status" type="number" value="200">
+
+            <label for="headers">Response headers (JSON)</label>
+            <textarea id="headers">{
+  "Content-Type": "application/json"
+}</textarea>
+
+            <label for="body">Response body</label>
+            <textarea id="body">{
+  "message": "Hello from ApiForge!"
+}</textarea>
+
+            <div class="actions">
+                <button id="cancel">Cancel</button>
+                <button id="save">Save endpoint</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="popup.js"></script>
+</body>
+</html>
